@@ -1,8 +1,11 @@
-export abstract class Pizzeria {
-  static id = 0; // Do pola statycznego odnosimy sie poprzez nazwę klasy, np. Pizzeria.id
-  id: any;
+import { Orderable } from "./orderable";
+import { Pizza, Status, Size } from "./pizza.model";
+
+export abstract class Pizzeria implements Orderable {
+  static id: number = 0; // Do pola statycznego odnosimy sie poprzez nazwę klasy, np. Pizzeria.id
+  id: number;
   readonly name: string;
-  private pizzasInOrder: any[] = [];
+  pizzasInOrder: Pizza[] = [];
   private maxPizzasInOver: number = 10;
   protected recipes: any[] = [];
   private _manager: string = "Jan Kowalski";
@@ -20,14 +23,16 @@ export abstract class Pizzeria {
     this._manager = manager;
   }
 
-  order(pizza: string) {
+  order(pizza: Pizza) {
     this.pizzasInOrder.push(pizza);
   }
+  changeStatus(index: number, status: Status) {
+    this.pizzasInOrder[index].status = status;
+  }
 
-  private isOvenFull() {
+  isOvenFull() {
     return this.pizzasInOrder.length > this.maxPizzasInOver;
   }
 
-  abstract bake(): any;
-
+  abstract bake(): void;
 }
